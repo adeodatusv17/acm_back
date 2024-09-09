@@ -3,7 +3,7 @@
     
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/back/(.*)",
         "dest": "/back/index.js"
       }
     ],
