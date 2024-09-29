@@ -8,6 +8,7 @@ const router = express.Router();
 
 
 
+
 router.get('/count', async (req, res) => {
     try {
       const count = await Applicant.countDocuments();
@@ -36,7 +37,7 @@ router.post('/addapplicant', async function(req, res) {
     }
 });
 // get applicant by ID
-router.get('/applicant/:uid', applicantMiddleware, async function(req, res) {
+router.get('/applicant/:uid', async function(req, res) {
     try {
         const applicant = await Applicant.findOne({ uid: req.params.uid });
         if (applicant) {
@@ -48,6 +49,8 @@ router.get('/applicant/:uid', applicantMiddleware, async function(req, res) {
         res.status(500).send("Error retrieving applicant");
     }
 });
+
+
 
 router.get('/notDone', async function(req, res) {
     try{
@@ -63,11 +66,13 @@ router.get('/notDone', async function(req, res) {
         } catch(error){
             res.status(404).send("Error sending reminders");
         }});
+       
+        
         
     
 
 // get applicant by UID
-router.put('/applicant/:uid', applicantMiddleware, async function(req, res) {
+router.put('/applicant/:uid',  async function(req, res) {
     try {
         const result = await Applicant.updateOne({ uid: req.params.uid }, req.body);
         if (result.nModified > 0) {
@@ -79,6 +84,9 @@ router.put('/applicant/:uid', applicantMiddleware, async function(req, res) {
         res.status(500).send("Error updating applicant");
     }
 });
+
+
+
 
 // delete applicant by UID
 router.delete('/delete/:uid', async function(req, res) {
@@ -93,6 +101,28 @@ router.delete('/delete/:uid', async function(req, res) {
         res.status(500).json({ message: "Error deleting applicant", error });
     }
 });
+
+
+
+router.post('/getname', async (req, res) => {
+    const { email } = req.body;  
+    try {
+      const applicant = await Applicant.findOne({ email });
+      
+      if (!applicant) {
+        return res.status(404).json({ message: 'Applicant not found' });
+      }
+  
+      res.json({ name: applicant.name });
+    } catch (error) {
+      console.error('Error fetching applicant name:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  
+
+
 
 
 module.exports = router;
