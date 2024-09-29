@@ -14,7 +14,8 @@ const { type } = require('os');
     email: String,
     phone: Number,
     role: String,
-    uid: String
+    uid: String,
+    done: Boolean
     
     // resume: String
  });
@@ -43,6 +44,10 @@ const InterviewSchema = new mongoose.Schema({
        ref: 'Admin',
        required: true
    },
+    feedback: {
+         type: String,
+         default: 'Pending'
+    },
    done:{
     type: Boolean,
     default: false
